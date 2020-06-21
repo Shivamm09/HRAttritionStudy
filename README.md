@@ -91,8 +91,8 @@ Before building the model it is important to understand how the model would be u
 
 Accuracy is not the best metric to use here because it is possible to have a reasonably good accuracy (in this case 84%) by predicting that everyone will stay in the company, but that does not solve the issue of attrition since the company still looses money and the employees and all the other factors such as reputation, loss in productivity and more are not mitigated. Since the protocol of making an employee stay can be expensive (doesn't have to cost money, still can cause the HR team time) it is important that whoever the model flags as vulnerable to leaving, there is a good confidence in that flag to be correct. The aim would be to have high precision with a decent recall. If the company is not bothered with the cost or it does not cost that much to change the employee's work factors, then a good measurement to take would be recall because that way the model would be able notice a lot of the employees who were going to leave prior to the HR intervention, but the confidence in the model may not be high. The precision recall tradeoff implies that the higher the precision the lower the recall and vice versa. Because I am hypothesizing that this procedure will be expensive I am choosing to keep a model that will have high precision and a reasonable recall. 
 
-Precision-Recall TradeOff
-<img src ='precision:recall.png'>
+Precision/Recall
+<img src ='images/pr.png'>
 
 # Feature Engineering 
 
