@@ -52,32 +52,16 @@ However prior to the exploring the data I deleted the HourlyRate, Daily Rate, Mo
 
 # Exploratory Data Analysis 
 
-<Correlation Matrix>
-   
+Correlation Matrix
  
-<img src ='images/Correlation.png'>
+<img src ='images/Corrlation_Matrix.png'>
 
 
 Important relationships
-   
-1. JobLevel                 MonthlyIncome              0.95
-2. JobLevel                 TotalWorkingYears          0.78
-3. PercentSalaryHike        PerformanceRating          0.77
-4. MonthlyIncome            TotalWorkingYears          0.77
-5. YearsAtCompany           YearsWithCurrManager       0.77
-6. YearsAtCompany           YearsInCurrentRole         0.76
-7. YearsInCurrentRole       YearsWithCurrManager       0.71
-8. Age                      TotalWorkingYears          0.68
-9. TotalWorkingYears        YearsAtCompany             0.63
-10. YearsAtCompany           YearsSinceLastPromotion    0.62
-11. YearsInCurrentRole       YearsSinceLastPromotion    0.55
-12. JobLevel                 YearsAtCompany             0.53
-13. MonthlyIncome            YearsAtCompany             0.51
-14. YearsSinceLastPromotion  YearsWithCurrManager       0.51
-15. Age                      JobLevel                   0.51
-16. Age                      MonthlyIncome              0.50
+
+<img src ='images/relationships.png' width="700" height="500">
  
- 
+
 
 The above marks all the important relationships between variables, I am using 0.5 correlation as the benchmark for an important relationship because anything above 0.5 marks a moderately positive relationship.
 
@@ -108,7 +92,6 @@ Accuracy is not the best metric to use here because it is possible to have a rea
 <precision-accuracy-recall picture HERE>
 
 
-
 # Feature Engineering 
 
 Most of the feature engineering described below stems from the previous analysis which already pointed at some important relationships. I converted the stock level data to a ‘yes/no’ type dataset since the previous analysis showed there was a binary relationship between having stock and not wanting to leave. I converted Overtime to either 1 or 0 from Yes and No. Due to the fact that males presented the majority of the data (data had only two genders) and males were more likely to leave than females, I converted the gender role to indicate 1 meaning the person was male and 0 to female. I also converted Marital status to 0 or 1 depending on whether they are single or not since the analysis suggested that if the person was single to 0 and 1 to whether they were married or divorced. I also converted business travel to 1 or zero if the individual travel frequently because the majority of the people that leave come from that category. Since the jobsatisfaction, environment satisfaction and relationshipsatisfaction all had very similar distributions in the analysis, I combined them into one feature and deleted the respective columns. To add, I dealt with the categorical columns job roles and department using the mean income from individuals with that role and department respectively because from the analysis I felt like the monthly income provided better understanding of those columns than using pandas dummies. I used minmax scaler to scale the whole matrix as well and used train test split (70-30) using stratify to make sure the probabilities of employees leaving the company stayed consistent. This means that I trained the models using 1029 employees records and tested in on 441 employees. Out of these 71 were marked as those who were thinking of leaving.
@@ -120,25 +103,22 @@ After experimenting with the different machine learning models and different fea
 Linear SVM 
 The following are the results which it produced:
 
-<results>
+<img src ='images/svc.png'>
    
-   
- The good thing about Linear SVM is that they are explainable; so when the model predicts than an employee is going to leave the company; they can understand (based on the data) which factors are making them want to quit the job. Below is an example of an employee when the model predicted was going to leave the company. 
+The good thing about Linear SVM is that they are explainable; so when the model predicts than an employee is going to leave the company; they can understand (based on the data) which factors are making them want to quit the job. Below is an example of an employee when the model predicted was going to leave the company. 
  
  
+ <img src ='images/Factors.png'>
  
- IMAGE
  
- 
- Explanation of each factor. 
-
+The above is an example showing how the explainability of the model helps the HR team understand which factors are affecting the decision of the individual for leaving the company. The way the model gets an answer is by doing a multiplication of coefficents with the features; the closer the sum is to 1, the predicted value will be else 0. The coefficents vary from negative numbers to positive numbers; but the features will always be positive (or zero) because I used the min max method. Essentially, the goal would be to have more features (who multiplication with the coefficents) are on the negative side; however, because the coefficents will only be multiplied by a positive value, I have made it such that the factors (multiplied by their appropriate feature coefficent) that are above -0.3 are factors which will make the person think about going leaving the company and anything below are factors which are will make the individual want to stay because they are happy/ok with that factor. The following is an example of an employee. As you can see, the most concerning factors (in the red) are that they work overtime and they do a lot of business trips; however, the factors that are good are that they have a good work life balance and are fairly satisified with their job. Even though there are many factors which the model takes in which can help the HR team and which they can attempt to change; however, there are some factors which the model takes as inputs which does not help, for example the department and gender, because these are factors which can't be changed. It would be helpful knowing from which department and specific job roles are individuals likely to leave; however, it mgiht be difficult to address that because it is what they have been employed for. 
 
 
 Neural Network 
 
 The following are the results which it produced:
 
-results 
+<img src ='images/NN.png'>
 
 
 Neural Networks don't explain why they reached a certain decision; so for example when an HR manager finds out from the model that this employee is predicted to leave the company, then they would need study the employee and have probably a longer meeting compared to using the linear model in understanding which factors need to be changed to help make the employee stay in the company, which can be a more expensive process. 
@@ -152,12 +132,11 @@ Linear SVMs in the following situation are very desirable because at the current
 According to the Harvard Business Rewiew (11) it costs over ￡30K on average to replace an employee; with that taken in mind with the SVM model we have saved at least ￡900K since 30 out of the 71 employees who wanted to leave we flagged by the model. This is a lower bound since non-financial costs such as training time and adjustment period are not included. It is also the case assuming that the HR team are able to convince the employee to stay by tuning their work environment factors.
 
 
-
 Problems with Higher Precision and Low Recall. 
 
 I also created a model (logistic regression) with 100% precision, which resulted in a very poor recall as shown below. 
 
-
+<img src ='images/Logistic Regression.png'>
 
 The following explains how this model is also hundred percent guaranteed that it will be right when it predicts when an employee will leave; however, it will cover about 3 percent of the individuals who will leave, which still implies that a large people proportion are going to leave, but more importantly they go unnoticed. 
 
