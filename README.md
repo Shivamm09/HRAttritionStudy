@@ -1,5 +1,6 @@
 # HRAttritionStudy
 
+(presentation of this report is in the pdf file) 
 # Business Objective 
 
 To demonstrate the financial and company benefits of using predictive analytics to drive employee retention. 
